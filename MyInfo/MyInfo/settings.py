@@ -25,7 +25,9 @@ SECRET_KEY = '-va^+)xw7rwg$eyj66!1zqztpco%x3(_ntgidk2#5n8@(^f$vu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+'90.150.146.62',
+]
 
 
 # Application definition
@@ -84,7 +86,7 @@ WSGI_APPLICATION = 'MyInfo.wsgi.application'
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'test2',
+    'NAME': 'meinfodb',
     'USER': 'postgres',
     'PASSWORD': '1',
     'HOST': 'localhost', # Set to empty string for localhost.

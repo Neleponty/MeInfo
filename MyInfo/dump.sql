@@ -1,6 +1,6 @@
 ﻿
 BEGIN TRANSACTION;
-CREATE TABLE IF NOT EXISTS "categories" ("name" CHAR NOT NULL , "id" serial PRIMARY KEY  NOT NULL );
+CREATE TABLE IF NOT EXISTS "categories" ("name" CHAR(100) NOT NULL , "id" serial PRIMARY KEY  NOT NULL );
 INSERT INTO "categories" VALUES('Спорт',1);
 INSERT INTO "categories" VALUES('Музыка',2);
 INSERT INTO "categories" VALUES('Волейбол',3);
@@ -57,11 +57,12 @@ CREATE TABLE IF NOT EXISTS "news"(
      pub_date Timestamp NOT NULL , 
      header  VARCHAR NOT NULL, 
      content  TEXT NOT NULL, 
-     id_categ  INTEGER NOT NULL REFERENCES categories( id ), 
      is_fav Integer NOT NULL DEFAULT 0, 
      likes  INTEGER NOT NULL DEFAULT 0, 
-     image_id  INTEGER NOT NULL REFERENCES photos_urls( id ),
-     scale Integer not Null
+     scale Integer not Null,
+     id_categ  INTEGER NOT NULL REFERENCES categories( id ),
+     image_id  INTEGER NOT NULL REFERENCES photos_urls( id )
+
 );
      
 
@@ -185,7 +186,7 @@ INSERT INTO "tour_point" VALUES(10,'ГУК','56.844040, 60.653668','Главны
 INSERT INTO "tour_point" VALUES(11,'ИРИТ-РтФ','56.840781, 60.650757','Все радисты с детства знают тройку самых важных слов: РтФ, УрФУ, Попов!','6');
 INSERT INTO "tour_point" VALUES(12,'Стадион','56.838375, 60.654371','Стадион УрФУ','7');
 
-CREATE TABLE IF NOT EXISTS "tours_to_points" ("id" serial PRIMARY KEY  NOT NULL , "tours_id" INTEGER NOT NULL , "point_id" INTEGER NOT NULL, FOREIGN KEY(tours_id) REFERENCES tours(id), FOREIGN KEY(point_id) REFERENCES tour_point(id));
+CREATE TABLE IF NOT EXISTS "tours_to_points" ("id" serial PRIMARY KEY  NOT NULL , "point_id" INTEGER NOT NULL, FOREIGN KEY(tours_id) REFERENCES tours(id),"tours_id" INTEGER NOT NULL,  FOREIGN KEY(point_id) REFERENCES tour_point(id));
 INSERT INTO "tours_to_points" VALUES(1,1,1);
 INSERT INTO "tours_to_points" VALUES(2,2,1);
 INSERT INTO "tours_to_points" VALUES(3,3,1);
@@ -199,9 +200,9 @@ INSERT INTO "tours_to_points" VALUES(10,10,3);
 INSERT INTO "tours_to_points" VALUES(11,11,3);
 INSERT INTO "tours_to_points" VALUES(12,12,3);
 CREATE TABLE IF NOT EXISTS "location_news_event"(
-id serial PRIMARY KEY NOT NULL,
-news_id INTEGER NOT NULL,
-coord TEXT NOT NULL, FOREIGN KEY(news_id) REFERENCES news(id));
+id serial PRIMARY KEY NOT NULL,coord TEXT NOT NULL,
+news_id Integer NOT NULL,
+ FOREIGN KEY(news_id) REFERENCES news(id));
 INSERT INTO "location_news_event" VALUES(1,'56.839366,60.599588',1);
 INSERT INTO "location_news_event" VALUES(2,'56.840235,60.617183',2);
 INSERT INTO "location_news_event" VALUES(3,'56.84568,60.604094',3);
@@ -220,7 +221,7 @@ INSERT INTO "photos_in_albums" VALUES(4,1,7);
 INSERT INTO "photos_in_albums" VALUES(5,2,1);
 INSERT INTO "photos_in_albums" VALUES(6,2,3);
 INSERT INTO "photos_in_albums" VALUES(7,2,4);
-CREATE TABLE IF NOT EXISTS "opinions" ("id" serial PRIMARY KEY  NOT NULL , "pub_date" DATETIME NOT NULL  DEFAULT CURRENT_TIMESTAMP, "title" TEXT NOT NULL , "headline" TEXT, "image_id" TEXT, "text" TEXT);
+CREATE TABLE IF NOT EXISTS "opinions" ("id" serial PRIMARY KEY  NOT NULL , "pub_date" CHAR(100) NOT NULL  DEFAULT CURRENT_TIMESTAMP, "title" TEXT NOT NULL , "headline" TEXT, "image_id" TEXT, "text" TEXT);
 INSERT INTO "opinions" VALUES(1,'2016-10-20 04:58:33','Просто спорт или призвание?','Слышали ли Вы когда-нибудь о парусном спорте? Знакомы ли с такими его видами как виндсёрфинг и кайтинг? ',NULL,'Слышали ли Вы когда-нибудь о парусном спорте? Знакомы ли с такими его видами как виндсёрфинг и кайтинг? 
 Основой кайтинга является катание на доске, управление которой происходит с помощью воздушного змея, удерживаемого спортсменом. Кайтинг не является сезонным видом спорта, поскольку летом тренировки проводятся на воде, а зимой происходит так называемая «смена доски», и спортсмены (кайтеры) встают на сноуборды и горные лыжи. Кайтеры обладают качественной общей физической подготовкой, у них хорошо развиты дыхательная система  и связочный аппарат. 
 Виндсёрфинг также является разновидностью индивидуального парусного спорта, заключающегося в управлении на водной поверхности доской с парусом, установленном на ней. Сезонность для виндсёрферов играет немалую роль, но это не мешает спортсменам достигать новых высот. Ведь, как говорится: «тяжело в учении – легко в бою».
